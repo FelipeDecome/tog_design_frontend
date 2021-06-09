@@ -25,6 +25,8 @@
         "prettier"
     ],
     "rules": {
+      "react/jsx-props-no-spreading": "off",
+      "react/prop-types": "off",
       "simple-import-sort/imports": "error",
       "simple-import-sort/exports": "error",
       "import/prefer-default-export": "off",
@@ -36,6 +38,21 @@
         "extensions": [
           ".tsx"
         ]
+        }
+      ],
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "_",
+          "ignoreRestSiblings": true
+        }
+      ],
+      "@typescript-eslint/naming-convention": [
+        "error",
+        {
+          "selector": "interface",
+          "prefix": ["I"],
+          "format": ["PascalCase"]
         }
       ],
       "no-use-before-define": "off",
