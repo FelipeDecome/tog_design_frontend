@@ -1,9 +1,14 @@
 import React from 'react';
 
+import { AuthProvider } from './auth';
 import { HeaderProvider } from './header';
 
 const Contexts: React.FC = ({ children }) => {
-  return <HeaderProvider>{children}</HeaderProvider>;
+  return (
+    <AuthProvider>
+      <HeaderProvider>{children}</HeaderProvider>
+    </AuthProvider>
+  );
 };
 
 export { Contexts };
