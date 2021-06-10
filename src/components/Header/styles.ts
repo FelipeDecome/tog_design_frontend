@@ -17,10 +17,6 @@ export const Container = styled.header`
     align-items: center;
 
     gap: 2.4rem;
-
-    & > *:first-child {
-      margin-right: 20px;
-    }
   }
 
   &.colapse {
