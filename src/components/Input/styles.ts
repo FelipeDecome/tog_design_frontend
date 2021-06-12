@@ -20,23 +20,31 @@ const ShakeAnimation = keyframes`
   }
 `;
 
-export const StyledLabel = styled.label`
+interface IStyledLabel {
+  backgroundColor?: string;
+}
+
+export const StyledLabel = styled.label<IStyledLabel>`
   padding: 0 0.4rem;
   position: absolute;
   left: 1.2rem;
 
   color: #aeaeae;
-  background: #f5f6f9;
+  background: ${props =>
+    props.backgroundColor ? props.backgroundColor : '#f5f6f9'};
   font-size: 1.4rem;
   letter-spacing: 0.47px;
 
   transition: transform 0.2s, color 0.2s, font-size 0.2s;
+  pointer-events: none;
 `;
 
 export const StyledInput = styled.input`
   padding-left: 1.6rem;
   width: 100%;
   height: 100%;
+
+  color: #3d3d3d;
 
   border: 0;
   background: none;
@@ -83,6 +91,7 @@ export const Container = styled.div<IContainerProps>`
     (props.isFocused || props.isFilled) &&
     css`
       & > ${StyledLabel} {
+        color: #3d3d3d;
         transform: translateY(-20px);
         font-size: 1.2rem;
         letter-spacing: 0.4px;
@@ -104,7 +113,7 @@ export const Container = styled.div<IContainerProps>`
     css`
       border-color: #992828;
 
-      & > ${StyledLabel} {
+      & > ${StyledLabel}, & > ${StyledInput} {
         color: #b00020;
       }
     `}
