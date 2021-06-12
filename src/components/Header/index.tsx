@@ -23,7 +23,9 @@ const Header: React.FC = () => {
           </Button>
         )}
 
-        <Button type="button" icon={<FaShoppingBag />} />
+        <Link to="/checkout">
+          <Button type="button" icon={<FaShoppingBag />} />{' '}
+        </Link>
 
         {user ? (
           <Button type="button" backgroundColor="primary" onClick={signOut}>
