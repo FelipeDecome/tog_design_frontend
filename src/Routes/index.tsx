@@ -3,6 +3,7 @@ import { Switch } from 'react-router-dom';
 
 import { Checkout } from '../pages/Checkout';
 import { SignIn } from '../pages/user/SignIn';
+import { Write } from '../pages/Write';
 import { Route } from './Route';
 
 const Routes: React.FC = () => {
@@ -12,6 +13,8 @@ const Routes: React.FC = () => {
       <Route path="/checkout" component={Checkout} />
 
       <Route path="/signin" component={SignIn} forbidenForUsers />
+
+      <Route path="/write" component={Write} isPrivate />
     </Switch>
   );
 };

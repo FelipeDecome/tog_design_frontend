@@ -9,11 +9,12 @@ interface IInputProps {
   type: string;
   label: string;
   labelBackground?: string;
+  maskMoney?: boolean;
   onKeyUp?: React.KeyboardEventHandler<HTMLInputElement>;
 }
 
 const Input: React.FC<IInputProps> = memo(
-  ({ id, name, type, label, labelBackground, onKeyUp }) => {
+  ({ id, name, type, label, labelBackground, maskMoney, onKeyUp }) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     const { registerField, fieldName, error } = useField(name);
@@ -26,6 +27,14 @@ const Input: React.FC<IInputProps> = memo(
       setIsFocused(false);
 
       setIsFilled(!!inputRef.current?.value);
+    }, []);
+
+    const handleInput = useCallback(() => {
+      if (inputRef.current)
+        inputRef.current.value = inputRef.current?.value.replace(
+          /[^\d,\d]+/g,
+          '',
+        );
     }, []);
 
     useEffect(() => {
@@ -41,6 +50,9 @@ const Input: React.FC<IInputProps> = memo(
         <StyledLabel backgroundColor={labelBackground} htmlFor={id || name}>
           {label}
         </StyledLabel>
+        {maskMoney && (isFocused || isFilled) && (
+          <span className="mask">R$</span>
+        )}
         <StyledInput
           ref={inputRef}
           type={type}
@@ -49,6 +61,7 @@ const Input: React.FC<IInputProps> = memo(
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
           onKeyUp={onKeyUp}
+          onInput={handleInput}
         />
         {error && <ErrorMessage>{error}</ErrorMessage>}
       </Container>
@@ -57,3 +70,7 @@ const Input: React.FC<IInputProps> = memo(
 );
 
 export { Input };
+
+/**
+ * FIX input display when type set to number
+ */

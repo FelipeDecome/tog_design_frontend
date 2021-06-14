@@ -24,7 +24,14 @@ interface IStyledLabel {
   backgroundColor?: string;
 }
 
+const textDefaults = css`
+  font-size: 1.4rem;
+  letter-spacing: 0.47px;
+`;
+
 export const StyledLabel = styled.label<IStyledLabel>`
+  ${textDefaults};
+
   padding: 0 0.4rem;
   position: absolute;
   left: 1.2rem;
@@ -32,15 +39,15 @@ export const StyledLabel = styled.label<IStyledLabel>`
   color: #aeaeae;
   background: ${props =>
     props.backgroundColor ? props.backgroundColor : '#f5f6f9'};
-  font-size: 1.4rem;
-  letter-spacing: 0.47px;
+
+  text-transform: capitalize;
 
   transition: transform 0.2s, color 0.2s, font-size 0.2s;
   pointer-events: none;
 `;
 
 export const StyledInput = styled.input`
-  padding-left: 1.6rem;
+  ${textDefaults};
   width: 100%;
   height: 100%;
 
@@ -59,12 +66,14 @@ export const ErrorMessage = styled.span`
   color: #b00020;
   font-size: 1rem;
   text-transform: uppercase;
+  white-space: nowrap;
 
   animation-name: ${ShakeAnimation};
   animation-duration: 0.4s;
 `;
 
 export const Container = styled.div<IContainerProps>`
+  padding-left: 1.6rem;
   width: 100%;
   height: 4rem;
 
@@ -77,6 +86,15 @@ export const Container = styled.div<IContainerProps>`
 
   transition: border-color 0.2s;
   cursor: text;
+
+  > span.mask {
+    ${textDefaults};
+    color: #3d3d3d;
+  }
+
+  span.mask + ${StyledInput} {
+    margin-left: 0.4rem;
+  }
 
   ${props =>
     !props.isFocused &&

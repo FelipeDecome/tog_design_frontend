@@ -8,7 +8,7 @@ import { Button, Logo } from '..';
 import { Container } from './styles';
 
 const Header: React.FC = () => {
-  const { headerColapse } = useHeader();
+  const { headerColapse, customButtons } = useHeader();
 
   const { user, signOut } = useAuth();
 
@@ -16,29 +16,35 @@ const Header: React.FC = () => {
     <Container className={headerColapse ? 'colapse' : ''}>
       <Logo />
 
-      <div>
-        {!!user && (
-          <Button type="button" backgroundColor="secondary">
-            Write
-          </Button>
-        )}
+      {customButtons ? (
+        <div>{customButtons}</div>
+      ) : (
+        <div>
+          {!!user && (
+            <Link to="/write">
+              <Button type="button" backgroundColor="secondary">
+                Write now
+              </Button>
+            </Link>
+          )}
 
-        <Link to="/checkout">
-          <Button type="button" icon={<FaShoppingBag />} />{' '}
-        </Link>
-
-        {user ? (
-          <Button type="button" backgroundColor="primary" onClick={signOut}>
-            Sign Out
-          </Button>
-        ) : (
-          <Link to="/signin">
-            <Button type="button" backgroundColor="primary">
-              Sign In
-            </Button>
+          <Link to="/checkout">
+            <Button type="button" icon={<FaShoppingBag />} />{' '}
           </Link>
-        )}
-      </div>
+
+          {user ? (
+            <Button type="button" backgroundColor="primary" onClick={signOut}>
+              Sign Out
+            </Button>
+          ) : (
+            <Link to="/signin">
+              <Button type="button" backgroundColor="primary">
+                Sign In
+              </Button>
+            </Link>
+          )}
+        </div>
+      )}
     </Container>
   );
 };
