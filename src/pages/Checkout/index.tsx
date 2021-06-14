@@ -2,18 +2,17 @@ import { Form } from '@unform/web';
 import React, { useCallback, useMemo, useState } from 'react';
 import { FaTrashAlt } from 'react-icons/fa';
 
-import { Input } from '../../components';
-import { Table, THead, TRow } from '../../components/Table';
+import { Input, Table, THead, TRow } from '../../components';
 import { useCart } from '../../Contexts/cart';
 import { formatValue } from '../../utils/formatValue';
 import { Container } from './styles';
 
-const articlePropertiesToExclude = ['text', 'cover'];
+const articlePropertiesToExclude = ['text', 'cover', 'themes'];
 
 const Checkout: React.FC = () => {
   const [discount, setDiscount] = useState(0);
 
-  const { items, subtotal } = useCart();
+  const { items, subtotal, removeItem } = useCart();
 
   const handleDiscountKeyUp = useCallback((e: React.KeyboardEvent) => {
     const target = e.target as HTMLInputElement;
@@ -23,9 +22,11 @@ const Checkout: React.FC = () => {
 
   const columTitles = useMemo(
     () =>
-      Object.keys(items[0]).filter(
-        title => !articlePropertiesToExclude.includes(title),
-      ),
+      items.length
+        ? Object.keys(items[0]).filter(
+            title => !articlePropertiesToExclude.includes(title),
+          )
+        : [],
     [items],
   );
 
@@ -56,36 +57,44 @@ const Checkout: React.FC = () => {
   return (
     <Container>
       <main>
-        <h3>Your cart</h3>
+        {items.length ? (
+          <>
+            <h3>Your cart</h3>
 
-        <Table>
-          <THead columnTitles={columTitles.filter(title => title !== 'id')}>
-            <th aria-label="Remove button cell" />
-          </THead>
+            <Table>
+              <THead columnTitles={columTitles.filter(title => title !== 'id')}>
+                <th aria-label="Remove button cell" />
+              </THead>
 
-          <tbody>
-            {rowValues.map(article => {
-              const [id, ...rest] = article;
+              <tbody>
+                {rowValues.map(article => {
+                  const [id, ...rest] = article;
 
-              return (
-                <TRow key={id} values={rest}>
-                  <td>
-                    <button type="button">
-                      <FaTrashAlt />
-                    </button>
-                  </td>
-                </TRow>
-              );
-            })}
+                  return (
+                    <TRow key={id} values={rest}>
+                      <td>
+                        <button type="button">
+                          <FaTrashAlt onClick={() => removeItem(id)} />
+                        </button>
+                      </td>
+                    </TRow>
+                  );
+                })}
 
-            <TRow
-              values={Object.entries({ subtotal: formatValue(subtotal) })[0]}
-              skipColumnsCount={2}
-              firstValueBold
-              separator
-            />
-          </tbody>
-        </Table>
+                <TRow
+                  values={
+                    Object.entries({ subtotal: formatValue(subtotal) })[0]
+                  }
+                  skipColumnsCount={2}
+                  firstValueBold
+                  separator
+                />
+              </tbody>
+            </Table>
+          </>
+        ) : (
+          <h3>Your cart is empty!</h3>
+        )}
       </main>
       <aside>
         <h3>Resume</h3>

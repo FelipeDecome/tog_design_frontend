@@ -12,6 +12,7 @@ interface IArticle {
   text: string;
   author: string;
   publisher: string;
+  themes: string[];
   cover: string;
   value: number;
 }
@@ -19,6 +20,7 @@ interface IArticle {
 interface ICartContextProps {
   items: IArticle[];
   addItems(item: IArticle): void;
+  removeItem(id: string): void;
   subtotal: number;
 }
 
@@ -29,6 +31,7 @@ const articleMock = [
     text: 'Lorem ipsum dolor',
     author: 'Daniel Alves',
     publisher: 'Tog.design',
+    themes: ['Business', 'Development', 'Social'],
     cover: '',
     value: 10.9,
   },
@@ -38,6 +41,7 @@ const articleMock = [
     text: 'Lorem ipsum dolor',
     author: 'Lucas Augusto',
     publisher: 'Tog.design',
+    themes: ['Business', 'Development', 'Social'],
     cover: '',
     value: 18.9,
   },
@@ -53,12 +57,23 @@ const CartProvider: React.FC = ({ children }) => {
     [],
   );
 
+  const removeItem = useCallback(
+    (id: string) => {
+      const parsedItems = items.filter(item => item.id !== id);
+
+      setItems([...parsedItems]);
+    },
+    [items],
+  );
+
   const subtotal = useMemo(() => {
-    return items.map(item => item.value).reduce((total, next) => total + next);
+    return items.length
+      ? items.map(item => item.value).reduce((total, next) => total + next)
+      : 0;
   }, [items]);
 
   return (
-    <CartContext.Provider value={{ items, addItems, subtotal }}>
+    <CartContext.Provider value={{ items, addItems, removeItem, subtotal }}>
       {children}
     </CartContext.Provider>
   );
