@@ -30,12 +30,12 @@ const Input: React.FC<IInputProps> = memo(
     }, []);
 
     const handleInput = useCallback(() => {
-      if (inputRef.current)
+      if (maskMoney && inputRef.current)
         inputRef.current.value = inputRef.current?.value.replace(
           /[^\d,\d]+/g,
           '',
         );
-    }, []);
+    }, [maskMoney]);
 
     useEffect(() => {
       registerField({
